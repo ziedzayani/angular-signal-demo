@@ -1,0 +1,167 @@
+/* You can add global styles to this file, and also import other style files */
+
+html { height: 100%; }
+
+body {
+    background: linear-gradient(to bottom right, #0f172a, #1a2f49);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+    background-attachment: fixed;
+  }
+
+  code {
+    font-family: 'Consolas', 'Courier New', monospace;
+    background-color: #334155;
+    color: #d4d4d4;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    display: inline-block;
+  }
+  .container {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+  }
+  
+  .container {
+    max-width: 70%;
+    margin: auto;
+  }
+  
+  .bloc {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #334155;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  .bloc mat-icon {
+    font-size: 1.2rem;
+    transition: transform 0.6s ease-in-out;
+  }
+  
+  .bloc p {
+    margin: 0;
+    padding: 10px;
+    background-color: #334155;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  .image-container {
+    margin-bottom: 20px;
+    text-align: center;
+    overflow: auto; 
+    padding-bottom: 20px;
+  }
+  
+  .bloc p.animate-show {
+    animation: show 0.6s ease-in-out forwards;
+  }
+  
+  .bloc p.animate-hide {
+    animation: hide 0.6s ease-in-out forwards;
+  }
+
+  .response {
+    margin: 2rem;
+    margin-bottom: 20px;
+  }
+
+  .reactive-space {
+    font-size: 0.8rem;
+    padding: 2rem;
+    max-width: 100%;
+    height: 1000px;
+    background-color: #07172e;
+
+  }
+  .info-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  
+  .row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-basis: 50%;
+  }
+  
+  .row label {
+    width: 120px;
+    margin-right: 10px;
+  }
+
+  .column-container {
+    display: flex;
+  }
+  
+  .column-container .column {
+    flex-basis: 50%;
+    height: 30rem;
+    padding: 0 10px;
+  }
+
+  .column-container .column p {
+    height: 10rem;
+  }
+
+  @media only screen and (max-width: 800px) {
+    .row {
+      display: block;
+    }
+    .row > div {
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+  }
+
+  @media only screen and (max-width: 1100px) {
+    div {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    p {
+      margin-bottom: 1rem;
+    }
+  }
+  
+
+
+  
+  @keyframes show {
+    from {
+      height: 0;
+      opacity: 0;
+    }
+    to {
+      height: auto;
+      opacity: 1;
+    }
+  }
+  
+  @keyframes hide {
+    from {
+      height: auto;
+      opacity: 1;
+    }
+    to {
+      height: 0;
+      opacity: 0;
+    }
+  }

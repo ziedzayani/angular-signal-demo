@@ -1,0 +1,189 @@
+<div class="container">
+  <div>
+    <h2 class="bloc" (click)="response1.hidden = !response1.hidden">
+      What are Angular Signals 🚦?
+      <mat-icon>{{response1.hidden ? 'expand_more' : 'chevron_right'}}</mat-icon>
+    </h2>
+    <div #response1 class="response" hidden>
+      <p  [@slideInOut]="response1.hidden ? 'out' : 'in'" >Signals are a reactive value, technically are a zero-argument functions <code>[(() => T)]</code>. When executed, they return the current value of the signal.</p>
+    </div>
+  </div>
+
+  <div>
+    <h2 class="bloc" (click)="response2.hidden = !response2.hidden">
+      how do we create a signal ? 
+      <mat-icon>{{response2.hidden ? 'expand_more' : 'chevron_right'}}</mat-icon>
+    </h2>
+    <div #response2 [@slideInOut]="response2.hidden ? 'out' : 'in'" hidden class="response">
+      <p>To create and initialize a signal, we call the <code>signal()</code> function:</p>
+      <pre><code>const movies = signal&lt;Movie[]&gt;([]);</code></pre>
+      <p>This function returns a specific type of signal called <code>SettableSignal</code>.</p>
+      <p>Signals are getter functions, but the <code>SettableSignal</code> type gives us the ability to modify the value using three methods:</p>
+      <ul>
+        <li><code>set(value: T)</code>: set the signal to a new value, and notify any dependents</li>
+        <li><code>update(fn: (value: T) => T)</code>: deriving a new value (Update the value of the signal based on its current value, and notify any dependents), The update operation uses the <code>set()</code> operation for performing updates behind the scenes.</li>
+        <li><code>modify(fn: (value: T) => void)</code>: Performing an internal mutation of the current value (Update the current value by mutating it in-place, and notify any dependents)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div>
+    <h2 class="bloc" (click)="response3.hidden = !response3.hidden">
+      But what does it mean to notify any dependents?" 😕?
+      <mat-icon>{{response3.hidden ? 'expand_more' : 'chevron_right'}}</mat-icon>
+    </h2>
+    <div #response3 [@slideInOut]="response3.hidden ? 'out' : 'in'" hidden class="response">
+      <p>This is the magic part of Signal. Now we will see what dependents are for Signals and how to notify them.<p>
+      <p> <strong>Signal</strong> is not just a value that can be modified, it is more than that, <strong>Signal</strong> is a reactive value and is a producer that notify consumers(dependents) when it changes.</p>
+      <div class="image-container">
+          <img width="400px" height="600px" alt="signal-notif" src="assets/images/signal-notif.png">
+      </div>
+    </div>
+  </div>
+  <div>
+    <h2 class="bloc" (click)="response4.hidden = !response4.hidden">
+      So, how we can add consumer to Signal ?
+      <mat-icon>{{response4.hidden ? 'expand_more' : 'chevron_right'}}</mat-icon>
+    </h2>
+    <div #response4 [@slideInOut]="response4.hidden ? 'out' : 'in'" hidden class="response">
+        <p>We can add consumers by using <strong>Effect</strong> and <strong>Computed</strong></p>
+        <h2>Effect</h2>
+        <p>Sometimes, when a signal has a new value, we may need to add a side effect. To accomplish this, we can use the <code>effect()</code> function.<p>
+        <p>Effect schedules and runs a side-effectful function inside a reactive context.</p>
+        <p> Signature of the effect function:
+        <code>
+          export function effect(effectFn: () => void): Effect
+        </code>
+        </p>
+
+
+        <h2>Computed</h2>
+        <p>What if there is another value that depends on the values of other signals, and needs to be recalculated whenever any of those dependencies changes? </p>
+        <p>To accomplish this, we can use the <code>computed()</code> function. Computed creates a memoizing signal, which calculates its value from the values of some number of input signals.</p>
+        <p>Signature of the computed function:
+          <code>
+            export function computed&lt;T&gt;(
+              computation: () => T, equal: ValueEqualityFn&lt;T&gt; = defaultEquals): Signal&lt;T&gt;
+          </code>
+        </p>
+    </div>
+
+
+    
+  <div class="reactive-space">
+    <p>I create a signal in the component with <code>movieSig = signal&lt;Movie|null&gt;(null);</code> </p><br>
+
+    <p>And I create another signal using <strong>computed()</strong> 
+    <code>
+      newMovieSig = computed( () => {{'{'}}<br>
+        let newMovie ={{'{'}}name : "Titanic",genre : "Romance",releaseYear: 1997, upVote:this.movieSig()?.upVote{{'}'}};<br>
+        return newMovie;<br>
+        {{'}'}}<br>
+    </code>
+   </p>
+
+   <div>
+    <p> And this is the informations of the movie, as you can see, there is no movie because we initialize our Signal with <code>null</code></p>
+    <div class="info-container bloc">
+      <h2 style="width: 100%;">First Signal</h2>
+      <div class="row">
+        <label for="name">Name:</label>
+        <div id="name">{{movieSig()?.name}}</div>
+      </div>
+      <div class="row">
+        <label for="genre">Genre:</label>
+        <div id="genre">{{movieSig()?.genre}}</div>
+      </div>
+      <div class="row">
+        <label for="release-year">Release Year:</label>
+        <div id="release-year">{{movieSig()?.releaseYear}}</div>
+      </div>
+      <div class="row">
+        <label for="up-vote">Up Vote:</label>
+        <div id="up-vote">{{movieSig()?.upVote}}</div>
+      </div>
+    </div>  
+    <div class="info-container bloc">
+      <h2 style="width: 100%;"> Signal Computed</h2>
+      <div class="row">
+        <label for="name">Name:</label>
+        <div id="name">{{newMovieSig().name}}</div>
+      </div>
+      <div class="row">
+        <label for="genre">Genre:</label>
+        <div id="genre">{{newMovieSig().genre}}</div>
+      </div>
+      <div class="row">
+        <label for="release-year">Release Year:</label>
+        <div id="release-year">{{newMovieSig().releaseYear}}</div>
+      </div>
+      <div class="row">
+        <label for="up-vote">Up Vote:</label>
+        <div id="up-vote">{{newMovieSig().upVote}}</div>
+      </div>
+    </div>  
+  </div>
+
+
+
+    <div class="column-container">
+    <div class="column">
+        <p>
+          This  <button mat-raised-button color="primary" (click)="setMovie()">Set()</button> will execute this code to set new value  : <br>
+          <code style="width: 300px;">movieSig.set({{'{'}}<br>
+            name: 'Spider-Man',<br>
+            genre: 'Action,<br>
+            Aventure',<br>
+            releaseYear: 2002{{'{'}})</code><br>
+      
+        </p>
+
+        <p>
+          This  <button mat-raised-button color="primary" (click)="updateMovie()">update()</button> will execute this code to derived a value from the current value  : <br>
+          <code style="width: 300px;">movieSig.update((movie) => {{'{'}}<br>
+            if(movie)<br>
+              movie.upVote+1;<br>
+            return movie;<br>
+          })</code><br>
+      
+        </p>
+
+     <p>
+      This  <button mat-raised-button color="primary" (click)="mutateMovie()">mutate()</button> will execute this code to mutate the value  : <br>
+      <code style="width: 300px;">movieSig.mutate((movie) => {{'{'}}<br>
+        if (movie) {{'{'}}<br>
+          movie.upVote = 2000;<br>
+          {{'}'}}{{'}'}});</code><br>
+  
+     </p>
+</div>
+<div class="column">
+     <p>
+      This  <button mat-raised-button color="primary" (click)="createEffect()">effect()</button> will execute this code to create an effect  : <br>
+      <code style="width: 300px;">effectSig = effect( () => {{'{'}}<br>
+        alert (`side effect angular signal after movie changes ${{'{'}}this.movieSig(){{'}'}}`)<br>
+        })</code><br>
+  
+     </p>
+
+
+
+
+     <p>
+      This  <button mat-raised-button color="primary" (click)="destroyEffect()">destroy()</button> will execute this code to destroy the effect  : <br>
+      <code style="width: 300px;">effectSig?.destroy();</code><br>
+  
+     </p>
+
+     <p>
+
+  
+     </p>
+
+     </div>
+     </div>
+    
+  </div>
+  </div>
+
+</div>
