@@ -17,8 +17,8 @@
     <div #response2 [@slideInOut]="response2.hidden ? 'out' : 'in'" hidden class="response">
       <p>To create and initialize a signal, we call the <code>signal()</code> function:</p>
       <pre><code>const movies = signal&lt;Movie[]&gt;([]);</code></pre>
-      <p>This function returns a specific type of signal called <code>SettableSignal</code>.</p>
-      <p>Signals are getter functions, but the <code>SettableSignal</code> type gives us the ability to modify the value using three methods:</p>
+      <p>This function returns a specific type of signal called <code>WritableSignal</code>.</p>
+      <p>Signals are getter functions, but the <code>WritableSignal</code> type gives us the ability to modify the value using three methods:</p>
       <ul>
         <li><code>set(value: T)</code>: set the signal to a new value, and notify any dependents</li>
         <li><code>update(fn: (value: T) => T)</code>: deriving a new value (Update the value of the signal based on its current value, and notify any dependents), The update operation uses the <code>set()</code> operation for performing updates behind the scenes.</li>
@@ -52,7 +52,7 @@
         <p>Effect schedules and runs a side-effectful function inside a reactive context.</p>
         <p> Signature of the effect function:
         <code>
-          export function effect(effectFn: () => void): Effect
+          export function effect(effectFn: () => EffectCleanupFn | void, options?: CreateEffectOptions): EffectRef
         </code>
         </p>
 
@@ -62,8 +62,7 @@
         <p>To accomplish this, we can use the <code>computed()</code> function. Computed creates a memoizing signal, which calculates its value from the values of some number of input signals.</p>
         <p>Signature of the computed function:
           <code>
-            export function computed&lt;T&gt;(
-              computation: () => T, equal: ValueEqualityFn&lt;T&gt; = defaultEquals): Signal&lt;T&gt;
+              export function computed&lt;T&gt;(computation: () => T, options?: CreateComputedOptions&lt;T&gt;): Signal&lt;T&gt; 
           </code>
         </p>
     </div>
@@ -160,9 +159,12 @@
 <div class="column">
      <p>
       This  <button mat-raised-button color="primary" (click)="createEffect()">effect()</button> will execute this code to create an effect  : <br>
-      <code style="width: 300px;">effectSig = effect( () => {{'{'}}<br>
-        alert (`side effect angular signal after movie changes ${{'{'}}this.movieSig(){{'}'}}`)<br>
-        })</code><br>
+        <code style="width: 350px;">runInInjectionContext(this.injector,<br>
+          () =>(this.effectSig = effect(() => {{'{'}}<br>
+            alert(`side effect angular signal after movie changes ${{'{'}}JSON.stringify(this.movieSig()<br>
+              ){{'}'}}`<br>
+            );{{'}'}})));</code><br>
+      
   
      </p>
 
@@ -171,7 +173,7 @@
 
      <p>
       This  <button mat-raised-button color="primary" (click)="destroyEffect()">destroy()</button> will execute this code to destroy the effect  : <br>
-      <code style="width: 300px;">effectSig?.destroy();</code><br>
+      <code style="width: 350px;">effectSig?.destroy();</code><br>
   
      </p>
 
